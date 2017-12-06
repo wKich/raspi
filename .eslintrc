@@ -1,0 +1,4 @@
+extends:
+  - skbkontur-keforms
+rules:
+  no-magic-numbers: off
