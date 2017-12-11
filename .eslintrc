@@ -2,3 +2,4 @@ extends:
   - skbkontur-keforms
 rules:
   no-magic-numbers: off
+  flowtype/require-parameter-type: off
