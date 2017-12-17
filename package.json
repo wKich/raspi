@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint-config-skbkontur-keforms": "^0.15.1"
+    "eslint-config-skbkontur-keforms": "^0.16.0"
   },
   "dependencies": {
     "pigpio": "^0.6.3"
