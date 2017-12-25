@@ -17,7 +17,7 @@ export default function dht11(sensor: Gpio, dataCallback: (humidity: number, tem
     } else {
       // ignore first 3 states
       counter += 1
-      if (counter < 3) return
+      if (counter <= 3) return
       if (tick < start) start -= 2 ** 32
       const diff = tick - start
 
