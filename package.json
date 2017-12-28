@@ -18,6 +18,7 @@
     "eslint-config-skbkontur-keforms": "^0.16.0"
   },
   "dependencies": {
+    "node-ipc": "^9.1.1",
     "pigpio": "^0.6.3"
   }
 }
