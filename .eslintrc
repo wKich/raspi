@@ -1,2 +1,4 @@
 extends:
   - skbkontur-keforms
+rules:
+  no-bitwise: off

@@ -6,38 +6,31 @@ function sleep(ms: number): Promise<void> {
 }
 
 export default function dht11(sensor: Gpio, dataCallback: (humidity: number, temperature: number) => void) {
+  // 25 us == 0
+  // 70 us == 1
+  // ignore first 3 states
   const data = [0, 0, 0, 0, 0]
-  const bits: number[] = []
-  let counter = 0
+  let counter = -3
   let start = 0
 
   sensor.on('alert', (level, tick) => {
     if (level == 1) {
       start = tick
     } else {
-      // ignore first 3 states
+      if (counter >= 0) {
+        const diff = (tick >> 0) - (start >> 0)
+
+        data[counter / 8 | 0] <<= 1
+        if (diff > 50) data[counter / 8 | 0] += 1
+      }
       counter += 1
-      if (counter <= 3) return
-      if (tick < start) start -= 2 ** 32
-      const diff = tick - start
-
-      // 25 us
-      if (diff < 50) bits.push(0)
-
-      // 70 us
-      if (diff > 50) bits.push(1)
     }
 
-    if (bits.length == 40) {
-      bits.forEach((bit, index) => {
-        data[Math.floor(index / 8)] *= 2
-        if (bit == 1) data[Math.floor(index / 8)] += 1
-      })
+    if (counter == 40) {
       if (data.slice(0, 4).reduce((a, b) => a + b) == data[4]) {
         dataCallback(data[0] + data[1] / 100, data[2] + data[3] / 100)
       }
-      counter = 0
-      bits.length = 0
+      counter = -3
       data.fill(0)
     }
   })
