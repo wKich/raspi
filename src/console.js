@@ -11,14 +11,10 @@ function clear() {
 ipc.config.id = 'console'
 ipc.config.silent = true
 ipc.connectTo('server', () => {
-  ipc.of.server.on('dht11', ({ humidity, temperature }) => {
+  ipc.of.server.on('dht11', ({ humidity, temperature }: { humidity: number, temperature: number}) => {
     clear()
     console.log(`Время: ${new Date().toLocaleTimeString()}`)
     console.log(`Влажность: ${humidity}%`)
     console.log(`Температура: ${temperature} *C`)
   })
 })
-
-
-// dht11 client (root) -> world server (user) <- console client (user)
-// dht11 client emit 'data' -> world broadcast [client.id] <- console client on 'dht11'

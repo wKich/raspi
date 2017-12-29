@@ -2,3 +2,4 @@ extends:
   - skbkontur-keforms
 rules:
   no-bitwise: off
+  no-process-env: off
