@@ -16,26 +16,28 @@ export default function dht11(sensor: Gpio, dataCallback: (humidity: number, tem
   sensor.on('alert', (level, tick) => {
     if (level == 1) {
       start = tick
-    } else {
-      if (counter >= 0) {
-        const diff = (tick >> 0) - (start >> 0)
 
-        data[counter / 8 | 0] <<= 1
-        if (diff > 50) data[counter / 8 | 0] += 1
-      }
-      counter += 1
+      return
     }
+
+    if (counter >= 0) {
+      const diff = (tick >> 0) - (start >> 0)
+
+      data[counter / 8 | 0] <<= 1
+      if (diff > 50) data[counter / 8 | 0] += 1
+    }
+    counter += 1
 
     if (counter == 40) {
       if (data.slice(0, 4).reduce((a, b) => a + b) == data[4]) {
         dataCallback(data[0] + data[1] / 100, data[2] + data[3] / 100)
       }
-      counter = -3
-      data.fill(0)
     }
   })
 
   async function readData() {
+    counter = -3
+    data.fill(0)
     sensor.mode(Gpio.OUTPUT)
     sensor.digitalWrite(0)
     await sleep(18)
