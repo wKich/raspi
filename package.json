@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "node-ipc": "^9.1.1",
+    "node-telegram-bot-api": "^0.30.0",
     "pigpio": "^0.6.3"
   }
 }
